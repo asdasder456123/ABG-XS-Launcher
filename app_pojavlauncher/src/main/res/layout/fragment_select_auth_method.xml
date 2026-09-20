@@ -28,6 +28,7 @@
 
         <com.kdt.mcgui.MineButton
             android:id="@+id/button_elyby_authentication"
+            android:backgroundTint="@color/auth_elyby_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/auth_select_elyby"
@@ -38,6 +39,7 @@
 
         <com.kdt.mcgui.MineButton
             android:id="@+id/button_local_authentication"
+            android:backgroundTint="@color/auth_local_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/auth_select_local"
