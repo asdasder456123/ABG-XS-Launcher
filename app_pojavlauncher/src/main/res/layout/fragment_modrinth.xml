@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/background_app">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Modrinth Mods"
+        android:textColor="@color/primary_text"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/modrinth_search"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:hint="ابحث عن مود..."
+        android:singleLine="true"
+        android:inputType="text"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/secondary_text"/>
+
+    <com.kdt.mcgui.LauncherMenuButton
+        android:id="@+id/modrinth_search_button"
+        style="@style/LauncherMenuButton.Universal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="بحث"
+        android:layout_marginTop="10dp"/>
+
+    <ProgressBar
+        android:id="@+id/modrinth_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/modrinth_results"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"/>
+
+</LinearLayout>
