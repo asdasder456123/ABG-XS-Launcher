@@ -7,7 +7,7 @@
     <color name="background_app">#000000</color>
     <color name="divider">@color/background_overlay</color>
     <color name="background_overlay">#464646</color>
-    <color name="background_status_bar">#B8860B</color>
+    <color name="background_status_bar">#000000</color>
     <color name="background_bottom_bar">#0A0A0A</color>
     <color name="icon_outline_color">#FFFFFF</color>
 
