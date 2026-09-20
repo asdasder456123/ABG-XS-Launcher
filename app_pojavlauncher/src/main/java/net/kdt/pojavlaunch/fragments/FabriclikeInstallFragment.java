@@ -1,5 +1,7 @@
 package net.kdt.pojavlaunch.fragments;
 
+import net.kdt.pojavlaunch.modrinth.ModrinthModInstaller;
+import net.kdt.pojavlaunch.instances.Instance;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -114,15 +116,31 @@ public abstract class FabriclikeInstallFragment extends Fragment implements Modl
                 getListenerProxy().onDataNotAvailable();
                 return;
             }
-            Instances.createInstance((i)->{
+            Instance instance = Instances.createInstance((i)->{
                 i.name = mFabriclikeUtils.getName();
                 i.icon = mFabriclikeUtils.getIconName();
                 i.versionId = versionId;
             }, versionId);
+
+            if (shouldInstallDefaultFabricMods()) {
+                ModrinthModInstaller.installCompatibleMods(
+                        instance,
+                        mSelectedGameVersion
+                );
+            }
+
             getListenerProxy().onDownloadFinished(null);
         }catch (IOException e) {
             Tools.showErrorRemote(e);
         }
+    }
+
+    /**
+     * Fabric enables automatic Modrinth mod installation.
+     * Other Fabric-like loaders keep the original behavior.
+     */
+    protected boolean shouldInstallDefaultFabricMods() {
+        return false;
     }
 
     @SuppressWarnings("unused")

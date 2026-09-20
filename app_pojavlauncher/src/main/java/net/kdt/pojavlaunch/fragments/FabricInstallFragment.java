@@ -10,4 +10,10 @@ public class FabricInstallFragment extends FabriclikeInstallFragment {
     public FabricInstallFragment() {
         super(FabriclikeUtils.FABRIC_UTILS, TAG);
     }
+    @Override
+    protected boolean shouldInstallDefaultFabricMods() {
+        return true;
+    }
+
 }
+
