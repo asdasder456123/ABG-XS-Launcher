@@ -209,6 +209,11 @@
     <string name="preference_java_description">Java Runtimes, JVM Arguments, RAM amount and sandbox</string>
     <string name="preference_misc_title">Miscellaneous settings</string>
     <string name="preference_misc_description">Version list and libraries check</string>
+    <string name="preference_ui_category_title">UI</string>
+    <string name="preference_ui_default_title">ABG XS الأساسي</string>
+    <string name="preference_ui_default_summary">الواجهة الأساسية لـ ABG XS Launcher</string>
+    <string name="preference_ui_remove_title">إزالة UI</string>
+    <string name="preference_ui_remove_summary">العودة إلى واجهة ABG XS الأساسية</string>
     <string name="preference_experimental_title">Experimental Stuff</string>
     <string name="preference_experimental_description">Use things there with consideration, no support</string>
     <string name="preference_sustained_performance_title">Enable sustained performance mode</string>
@@ -543,5 +548,4 @@
     <string name="main_please_restart">Please restart the game from the launcher homescreen</string>
     <string name="local_login_buy_game_title">Buy Minecraft</string>
     <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it.</string>
-    <string name="modrinth_mods">Mods</string>
 </resources>

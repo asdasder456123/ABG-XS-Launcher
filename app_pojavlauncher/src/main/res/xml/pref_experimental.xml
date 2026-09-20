@@ -31,4 +31,19 @@
             android:summary="@string/preference_alsoft_opensl_summary"
             />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preference_ui_category_title">
+
+        <Preference
+            android:key="ui_remove"
+            android:title="@string/preference_ui_remove_title"
+            android:summary="@string/preference_ui_remove_summary" />
+
+        <Preference
+            android:key="ui_default"
+            android:title="@string/preference_ui_default_title"
+            android:summary="@string/preference_ui_default_summary" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

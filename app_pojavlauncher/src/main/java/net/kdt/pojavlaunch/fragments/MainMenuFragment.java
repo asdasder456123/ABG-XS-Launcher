@@ -1,6 +1,5 @@
 package net.kdt.pojavlaunch.fragments;
 
-import net.kdt.pojavlaunch.fragments.ModrinthFragment;
 import static net.kdt.pojavlaunch.Tools.openPath;
 import static net.kdt.pojavlaunch.Tools.shareLog;
 
@@ -56,14 +55,6 @@ public class MainMenuFragment extends Fragment {
         Button mInstallJarButton = view.findViewById(R.id.install_jar_button);
         Button mShareLogsButton = view.findViewById(R.id.share_logs_button);
         Button mOpenDirectoryButton = view.findViewById(R.id.open_files_button);
-        Button mModrinthButton = view.findViewById(R.id.modrinth_button);
-
-        mModrinthButton.setOnClickListener(v -> Tools.swapFragment(
-                requireActivity(),
-                ModrinthFragment.class,
-                ModrinthFragment.TAG,
-                null
-        ));
 
         ImageButton mEditProfileButton = view.findViewById(R.id.edit_profile_button);
         Button mPlayButton = view.findViewById(R.id.play_button);
