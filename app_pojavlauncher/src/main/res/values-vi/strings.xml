@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 <!-- App name part -->
     <string name="app_name" translatable="false">ABG XS Launcher</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_short_name" translatable="false">ABG XS Launcher</string>
 
     <!-- Action bar part -->
 
