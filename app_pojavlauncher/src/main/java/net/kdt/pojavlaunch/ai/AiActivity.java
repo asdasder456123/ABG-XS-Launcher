@@ -251,7 +251,7 @@ public class AiActivity extends AppCompatActivity {
 
         LinearLayout composer = new LinearLayout(this);
         composer.setGravity(Gravity.CENTER_VERTICAL);
-        composer.setPadding(dp(2), dp(6), dp(2), dp(2));
+        composer.setPadding(dp(2), dp(8), dp(2), dp(18));
 
         LinearLayout inputBox = new LinearLayout(this);
         inputBox.setGravity(Gravity.CENTER_VERTICAL);
