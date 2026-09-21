@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_58sdp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="@dimen/_6sdp"
+    android:background="@drawable/bg_abg_animated_account">
+
+    <fr.spse.extended_view.ExtendedTextView
+        android:id="@+id/account_item"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="@dimen/_15ssp"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:drawablePadding="@dimen/_8sdp"
+        android:paddingStart="@dimen/_8sdp"
+        app:drawableStartSize="@dimen/_32sdp"
+        app:drawableEndSize="@dimen/_28sdp" />
+
+    <ImageView
+        android:id="@+id/delete_account_button"
+        android:layout_width="@dimen/_48sdp"
+        android:layout_height="@dimen/_48sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_px_trash"
+        android:padding="@dimen/padding_moderate" />
+
+</LinearLayout>

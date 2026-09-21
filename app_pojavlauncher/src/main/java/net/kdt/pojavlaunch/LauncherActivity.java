@@ -48,6 +48,7 @@ import net.kdt.pojavlaunch.tasks.MoJsonExtras;
 import net.kdt.pojavlaunch.tasks.AsyncVersionList;
 import net.kdt.pojavlaunch.tasks.MoJsonDownloader;
 import net.kdt.pojavlaunch.utils.NotificationUtils;
+import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 import net.kdt.pojavlaunch.R;
 
@@ -164,7 +165,22 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pojav_launcher);
+        setContentView(AbgUiManager.isAnimatedUi(this)
+                ? R.layout.activity_pojav_launcher_animated
+                : R.layout.activity_pojav_launcher);
+
+        if (AbgUiManager.isAnimatedUi(this)) {
+            View topBar = findViewById(R.id.animated_top_bar);
+            if (topBar != null) {
+                topBar.setAlpha(0f);
+                topBar.setTranslationY(-18f);
+                topBar.animate()
+                        .alpha(1f)
+                        .translationY(0f)
+                        .setDuration(360)
+                        .start();
+            }
+        }
         MoJsonDownloader.prepareSubstitutionMap(getAssets());
 
         try {

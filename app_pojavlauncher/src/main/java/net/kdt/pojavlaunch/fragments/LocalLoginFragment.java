@@ -3,6 +3,8 @@ package net.kdt.pojavlaunch.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import net.kdt.pojavlaunch.authenticator.accounts.Accounts;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
+import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -27,13 +30,36 @@ public class LocalLoginFragment extends Fragment {
     private EditText mUsernameEditText;
 
     public LocalLoginFragment(){
-        super(R.layout.fragment_local_login);
+        super();
         mUsernameValidationPattern = Pattern.compile("^[a-zA-Z0-9_]*$");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        int layout = AbgUiManager.isAnimatedUi(requireContext())
+                ? R.layout.fragment_local_login_animated
+                : R.layout.fragment_local_login;
+
+        return inflater.inflate(layout, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mUsernameEditText = view.findViewById(R.id.login_edit_email);
+
+        if (AbgUiManager.isAnimatedUi(requireContext())) {
+            View card = view.findViewById(R.id.login_menu);
+            if (card != null) {
+                card.setAlpha(0f);
+                card.setTranslationY(28f);
+                card.animate()
+                        .alpha(1f)
+                        .translationY(0f)
+                        .setDuration(360)
+                        .start();
+            }
+        }
+
         view.findViewById(R.id.login_button).setOnClickListener(v -> {
             Context context = v.getContext();
             if(!checkEditText()) {
