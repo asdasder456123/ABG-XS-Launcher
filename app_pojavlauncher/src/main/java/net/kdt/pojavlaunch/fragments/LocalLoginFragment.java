@@ -36,9 +36,14 @@ public class LocalLoginFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int layout = AbgUiManager.isAnimatedUi(requireContext())
-                ? R.layout.fragment_local_login_animated
-                : R.layout.fragment_local_login;
+        int layout;
+        if (AbgUiManager.isAuroraUi(requireContext())) {
+            layout = R.layout.fragment_local_login_aurora;
+        } else if (AbgUiManager.isAnimatedUi(requireContext())) {
+            layout = R.layout.fragment_local_login_animated;
+        } else {
+            layout = R.layout.fragment_local_login;
+        }
 
         return inflater.inflate(layout, container, false);
     }

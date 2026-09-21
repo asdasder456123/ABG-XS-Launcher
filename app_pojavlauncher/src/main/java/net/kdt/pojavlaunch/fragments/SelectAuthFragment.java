@@ -27,9 +27,14 @@ public class SelectAuthFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int layout = AbgUiManager.isAnimatedUi(requireContext())
-                ? R.layout.fragment_select_auth_method_animated
-                : R.layout.fragment_select_auth_method;
+        int layout;
+        if (AbgUiManager.isAuroraUi(requireContext())) {
+            layout = R.layout.fragment_select_auth_method_aurora;
+        } else if (AbgUiManager.isAnimatedUi(requireContext())) {
+            layout = R.layout.fragment_select_auth_method_animated;
+        } else {
+            layout = R.layout.fragment_select_auth_method;
+        }
 
         return inflater.inflate(layout, container, false);
     }

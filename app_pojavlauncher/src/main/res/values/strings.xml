@@ -214,6 +214,8 @@
     <string name="preference_ui_default_summary">الواجهة الأساسية لـ ABG XS Launcher</string>
     <string name="preference_ui_animated_title">ABG XS Animated UI</string>
     <string name="preference_ui_animated_summary">واجهة ABG XS الحديثة مع ألوان وحركات وانتقالات محسّنة</string>
+    <string name="preference_ui_aurora_title">ABG XS Aurora</string>
+    <string name="preference_ui_aurora_summary">واجهة Aurora مستقلة بتصميم عصري وحركات وانتقالات سلسة</string>
     <string name="preference_ui_remove_title">إزالة UI</string>
     <string name="preference_ui_remove_summary">العودة إلى واجهة ABG XS الأساسية</string>
     <string name="preference_experimental_title">Experimental Stuff</string>

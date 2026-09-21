@@ -16,6 +16,7 @@ import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 public class VersionSelectorDialog {
     public static void open(Context context, boolean hideCustomVersions, VersionSelectorListener listener) {
+        boolean auroraUi = AbgUiManager.isAuroraUi(context);
         boolean animatedUi = AbgUiManager.isAnimatedUi(context);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -40,7 +41,23 @@ public class VersionSelectorDialog {
 
         AlertDialog dialog = builder.show();
 
-        if (animatedUi && dialog.getWindow() != null) {
+        if (auroraUi && dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(
+                    R.drawable.bg_abg_aurora_root
+            );
+
+            View decor = dialog.getWindow().getDecorView();
+            decor.setAlpha(0f);
+            decor.setScaleX(0.94f);
+            decor.setScaleY(0.94f);
+            decor.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(240)
+                    .start();
+
+        } else if (animatedUi && dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(
                     R.drawable.bg_abg_animated_version_dialog
             );

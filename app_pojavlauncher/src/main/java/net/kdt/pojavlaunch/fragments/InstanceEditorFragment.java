@@ -70,9 +70,14 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         if(value != null){
             mSelectedControlLayout = value;
         }
-        int layout = AbgUiManager.isAnimatedUi(requireContext())
-                ? R.layout.fragment_instance_editor_animated
-                : R.layout.fragment_instance_editor;
+        int layout;
+        if (AbgUiManager.isAuroraUi(requireContext())) {
+            layout = R.layout.fragment_instance_editor_aurora;
+        } else if (AbgUiManager.isAnimatedUi(requireContext())) {
+            layout = R.layout.fragment_instance_editor_animated;
+        } else {
+            layout = R.layout.fragment_instance_editor;
+        }
 
         return inflater.inflate(layout, container, false);
     }

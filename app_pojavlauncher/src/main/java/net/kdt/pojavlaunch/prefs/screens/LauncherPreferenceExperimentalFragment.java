@@ -47,6 +47,16 @@ public class LauncherPreferenceExperimentalFragment extends LauncherPreferenceFr
             applyUiAndReturn();
             return true;
         });
+
+        Preference uiAurora = requirePreference("ui_aurora", Preference.class);
+        uiAurora.setOnPreferenceClickListener(preference -> {
+            AbgUiManager.setSelectedUi(
+                    requireContext(),
+                    AbgUiManager.UI_AURORA
+            );
+            applyUiAndReturn();
+            return true;
+        });
     }
 
     private void applyUiAndReturn() {

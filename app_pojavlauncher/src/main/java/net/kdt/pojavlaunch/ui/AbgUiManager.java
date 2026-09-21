@@ -10,6 +10,7 @@ public final class AbgUiManager {
 
     public static final String UI_DEFAULT = "default";
     public static final String UI_ANIMATED = "animated";
+    public static final String UI_AURORA = "aurora";
 
     private AbgUiManager() {
     }
@@ -38,6 +39,10 @@ public final class AbgUiManager {
 
     public static boolean isAnimatedUi(Context context) {
         return UI_ANIMATED.equals(getSelectedUi(context));
+    }
+
+    public static boolean isAuroraUi(Context context) {
+        return UI_AURORA.equals(getSelectedUi(context));
     }
 
     private static SharedPreferences getPreferences(Context context) {

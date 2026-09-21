@@ -169,9 +169,10 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean auroraUi = AbgUiManager.isAuroraUi(this);
         boolean animatedUi = AbgUiManager.isAnimatedUi(this);
 
-        if (animatedUi) {
+        if (auroraUi || animatedUi) {
             WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
             WindowInsetsControllerCompat controller =
                     WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());

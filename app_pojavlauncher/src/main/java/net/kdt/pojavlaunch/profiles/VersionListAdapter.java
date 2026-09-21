@@ -28,10 +28,12 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
     private final boolean mHideCustomVersions;
     private final int mSnapshotListPosition;
     private final boolean mAnimatedUi;
+    private final boolean mAuroraUi;
 
     public VersionListAdapter(JVersionList.Version[] versionList, boolean hideCustomVersions, Context ctx){
         mHideCustomVersions = hideCustomVersions;
         mAnimatedUi = AbgUiManager.isAnimatedUi(ctx);
+        mAuroraUi = AbgUiManager.isAuroraUi(ctx);
         mLayoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         List<JVersionList.Version> releaseList = new FilteredSubList<>(versionList, item -> item.type.equals("release"));
@@ -106,7 +108,7 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if (!mAnimatedUi) {
+        if (!mAnimatedUi && !mAuroraUi) {
             if(convertView == null)
                 convertView = mLayoutInflater.inflate(
                         android.R.layout.simple_expandable_list_item_1,
@@ -145,7 +147,7 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if (!mAnimatedUi) {
+        if (!mAnimatedUi && !mAuroraUi) {
             if(convertView == null)
                 convertView = mLayoutInflater.inflate(
                         android.R.layout.simple_expandable_list_item_1,

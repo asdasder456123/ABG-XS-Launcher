@@ -50,5 +50,10 @@
             android:title="@string/preference_ui_animated_title"
             android:summary="@string/preference_ui_animated_summary" />
 
+        <Preference
+            android:key="ui_aurora"
+            android:title="@string/preference_ui_aurora_title"
+            android:summary="@string/preference_ui_aurora_summary" />
+
     </PreferenceCategory>
 </PreferenceScreen>

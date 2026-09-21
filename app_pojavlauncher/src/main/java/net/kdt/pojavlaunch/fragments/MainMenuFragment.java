@@ -57,9 +57,15 @@ public class MainMenuFragment extends Fragment {
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
 
-        int layout = AbgUiManager.isAnimatedUi(requireContext())
-                ? R.layout.fragment_launcher_animated
-                : R.layout.fragment_launcher;
+        int layout;
+
+        if (AbgUiManager.isAuroraUi(requireContext())) {
+            layout = R.layout.fragment_launcher_aurora;
+        } else if (AbgUiManager.isAnimatedUi(requireContext())) {
+            layout = R.layout.fragment_launcher_animated;
+        } else {
+            layout = R.layout.fragment_launcher;
+        }
 
         return inflater.inflate(layout, container, false);
     }
@@ -115,10 +121,41 @@ public class MainMenuFragment extends Fragment {
 
         if (AbgUiManager.isAnimatedUi(requireContext())) {
             animateAnimatedUi(view);
+        } else if (AbgUiManager.isAuroraUi(requireContext())) {
+            animateAuroraUi(view);
         }
 
 
 
+    }
+
+    private void animateAuroraUi(View root) {
+        View content = root.findViewById(R.id.animated_content);
+        if (content == null) return;
+
+        content.setAlpha(0f);
+        content.setTranslationY(18f);
+
+        content.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(360)
+                .start();
+
+        View play = root.findViewById(R.id.play_button);
+        if (play != null) {
+            play.setScaleX(0.96f);
+            play.setScaleY(0.96f);
+            play.setAlpha(0f);
+
+            play.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(300)
+                    .setStartDelay(180)
+                    .start();
+        }
     }
 
     private void animateAnimatedUi(View root) {
