@@ -63,6 +63,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="net.kdt.pojavlaunch.ai.AiActivity"
+            android:exported="false"
+            android:label="@string/preference_ai_title"
+            android:theme="@style/AppTheme" />
+
+        <activity
             android:name="net.kdt.pojavlaunch.LauncherActivity"
             android:label="@string/app_short_name"
             android:windowSoftInputMode="adjustResize"/>

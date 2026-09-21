@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="preference_ai_title">الذكاء الاصطناعي</string>
+    <string name="preference_ai_summary">محادثة الذكاء الاصطناعي باستخدام مفتاحك الخاص</string>
+</resources>
