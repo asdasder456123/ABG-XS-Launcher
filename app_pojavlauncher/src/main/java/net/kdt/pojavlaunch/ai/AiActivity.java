@@ -419,6 +419,10 @@ public class AiActivity extends AppCompatActivity {
 
         addUserMessage(message);
 
+        if (LauncherAiActions.tryHandle(this, message)) {
+            return;
+        }
+
         sendButton.setEnabled(false);
         sendButton.setAlpha(0.5f);
 
