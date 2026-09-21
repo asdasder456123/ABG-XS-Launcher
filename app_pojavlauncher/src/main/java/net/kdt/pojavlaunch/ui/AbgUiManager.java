@@ -9,6 +9,7 @@ public final class AbgUiManager {
     private static final String KEY_SELECTED_UI = "selected_ui";
 
     public static final String UI_DEFAULT = "default";
+    public static final String UI_ANIMATED = "animated";
 
     private AbgUiManager() {
     }
@@ -33,6 +34,10 @@ public final class AbgUiManager {
 
     public static boolean isDefaultUi(Context context) {
         return UI_DEFAULT.equals(getSelectedUi(context));
+    }
+
+    public static boolean isAnimatedUi(Context context) {
+        return UI_ANIMATED.equals(getSelectedUi(context));
     }
 
     private static SharedPreferences getPreferences(Context context) {
