@@ -237,7 +237,16 @@ public class MainMenuFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         ExtraCore.setValue(ExtraConstants.REFRESH_ACCOUNT_SPINNER, true);
+
+        if (mVersionSpinner != null) {
+            mVersionSpinner.post(() -> {
+                if (isAdded()) {
+                    mVersionSpinner.reloadProfiles();
+                }
+            });
+        }
     }
 
     private void runInstallerWithConfirmation() {

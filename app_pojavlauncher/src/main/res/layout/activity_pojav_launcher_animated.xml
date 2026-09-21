@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/animated_top_bar"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/_10sdp"

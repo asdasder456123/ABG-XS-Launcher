@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_abg_animated">
+
+    <ScrollView
+        android:id="@+id/animated_editor_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/_12sdp"
+        android:fadeScrollbars="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/_14sdp"
+            android:paddingEnd="@dimen/_14sdp"
+            android:paddingTop="@dimen/_14sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:background="@drawable/bg_abg_animated_card"
+                android:padding="@dimen/_16sdp">
+
+                <FrameLayout
+                    android:layout_width="@dimen/_78sdp"
+                    android:layout_height="@dimen/_78sdp">
+
+                    <ImageView
+                        android:id="@+id/vprof_editor_instance_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_6sdp"
+                        tools:src="@tools:sample/avatars"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:layout_gravity="bottom|end"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_px_edit"
+                        android:background="@drawable/background_icon_edit"/>
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/vprof_editor_profile_name_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/profiles_profile_name"
+                    android:textColor="#AAA5C8"
+                    android:textSize="@dimen/_11ssp"/>
+
+                <EditText
+                    android:id="@+id/vprof_editor_instance_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@drawable/bg_abg_animated_field"
+                    android:hint="@string/unnamed"
+                    android:inputType="textPersonName"
+                    android:padding="@dimen/_13sdp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#77728F"
+                    android:textSize="@dimen/_13ssp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/profiles_profile_version"
+                android:textColor="#AAA5C8"
+                android:textSize="@dimen/_11ssp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/vprof_editor_version_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_abg_animated_field"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="@dimen/_14sdp"
+                    android:hint="@string/version_select_hint"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#77728F"
+                    android:textSize="@dimen/_13ssp"/>
+
+                <Button
+                    android:id="@+id/vprof_editor_version_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/bg_abg_animated_button"
+                    android:minWidth="0dp"
+                    android:text="@string/global_select"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/default_control"
+                android:textColor="#AAA5C8"
+                android:textSize="@dimen/_11ssp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/vprof_editor_ctrl_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_abg_animated_field"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="@dimen/_14sdp"
+                    android:hint="@string/use_global_default"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#77728F"
+                    android:textSize="@dimen/_13ssp"/>
+
+                <Button
+                    android:id="@+id/vprof_editor_ctrl_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/bg_abg_animated_button"
+                    android:minWidth="0dp"
+                    android:text="@string/global_select"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/instance_shared_data"
+                android:textColor="#AAA5C8"
+                android:textSize="@dimen/_11ssp"/>
+
+            <CheckBox
+                android:id="@+id/vprof_editor_data_checkbox_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/bg_abg_animated_field"
+                android:button="@null"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/_14sdp"
+                android:text="@string/instance_shared_data_off"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/pvc_jvmArgs"
+                android:textColor="#AAA5C8"
+                android:textSize="@dimen/_11ssp"/>
+
+            <EditText
+                android:id="@+id/vprof_editor_jre_args"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/bg_abg_animated_field"
+                android:hint="@string/use_global_default"
+                android:inputType="text"
+                android:padding="@dimen/_13sdp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#77728F"
+                android:textSize="@dimen/_13ssp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/pedit_java_runtime"
+                android:textColor="#AAA5C8"
+                android:textSize="@dimen/_11ssp"/>
+
+            <Spinner
+                android:id="@+id/vprof_editor_spinner_runtime"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/bg_abg_animated_field"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/pedit_renderer"
+                android:textColor="#AAA5C8"
+                android:textSize="@dimen/_11ssp"/>
+
+            <Spinner
+                android:id="@+id/vprof_editor_instance_renderer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@drawable/bg_abg_animated_field"
+                android:dropDownWidth="match_parent"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_14sdp"
+        android:paddingEnd="@dimen/_14sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_12sdp">
+
+        <com.kdt.mcgui.MineButton
+            android:id="@+id/vprof_editor_save_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_52sdp"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:text="@string/global_save"/>
+
+        <com.kdt.mcgui.MineButton
+            android:id="@+id/vprof_editor_delete_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_52sdp"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@string/global_delete"/>
+    </LinearLayout>
+</LinearLayout>

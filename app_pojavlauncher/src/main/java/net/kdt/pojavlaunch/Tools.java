@@ -742,8 +742,43 @@ public final class Tools {
     }
 
     public static void backToMainMenu(FragmentActivity fragmentActivity) {
-        fragmentActivity.getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentActivity.getSupportFragmentManager().popBackStack(
+                null,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+        );
+    }
 
+    /**
+     * Returns to the main menu after editing an instance.
+     * Keeps the original navigation and Minecraft launch logic untouched.
+     */
+    public static void returnToMainMenu(FragmentActivity fragmentActivity) {
+        FragmentManager manager = fragmentActivity.getSupportFragmentManager();
+
+        if (manager.isStateSaved()) {
+            return;
+        }
+
+        manager.popBackStack(
+                null,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+        );
+
+        manager.executePendingTransactions();
+
+        Fragment current = manager.findFragmentById(R.id.container_fragment);
+
+        if (!(current instanceof net.kdt.pojavlaunch.fragments.MainMenuFragment)) {
+            manager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(
+                            R.id.container_fragment,
+                            net.kdt.pojavlaunch.fragments.MainMenuFragment.class,
+                            null,
+                            net.kdt.pojavlaunch.fragments.MainMenuFragment.TAG
+                    )
+                    .commit();
+        }
     }
 
     /** Remove the current fragment */

@@ -12,6 +12,7 @@ import net.kdt.pojavlaunch.JVersionList;
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.utils.FilteredSubList;
+import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 import java.io.File;
 import java.util.Arrays;
@@ -26,9 +27,11 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
     private final List<?>[] mData;
     private final boolean mHideCustomVersions;
     private final int mSnapshotListPosition;
+    private final boolean mAnimatedUi;
 
     public VersionListAdapter(JVersionList.Version[] versionList, boolean hideCustomVersions, Context ctx){
         mHideCustomVersions = hideCustomVersions;
+        mAnimatedUi = AbgUiManager.isAnimatedUi(ctx);
         mLayoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         List<JVersionList.Version> releaseList = new FilteredSubList<>(versionList, item -> item.type.equals("release"));
@@ -103,19 +106,76 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if(convertView == null)
-            convertView = mLayoutInflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
+        if (!mAnimatedUi) {
+            if(convertView == null)
+                convertView = mLayoutInflater.inflate(
+                        android.R.layout.simple_expandable_list_item_1,
+                        parent,
+                        false
+                );
 
-        ((TextView) convertView).setText(mGroups[groupPosition]);
+            ((TextView) convertView).setText(mGroups[groupPosition]);
+            return convertView;
+        }
+
+        if (convertView == null || convertView.findViewById(R.id.version_group_title) == null) {
+            convertView = mLayoutInflater.inflate(
+                    R.layout.item_version_group_animated,
+                    parent,
+                    false
+            );
+        }
+
+        TextView title = convertView.findViewById(R.id.version_group_title);
+        TextView arrow = convertView.findViewById(R.id.version_group_arrow);
+
+        title.setText(mGroups[groupPosition]);
+        arrow.setText(isExpanded ? "⌄" : "›");
+
+        convertView.setScaleX(0.98f);
+        convertView.setScaleY(0.98f);
+        convertView.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(140)
+                .start();
 
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if(convertView == null)
-            convertView = mLayoutInflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
-        ((TextView) convertView).setText(getChild(groupPosition, childPosition));
+        if (!mAnimatedUi) {
+            if(convertView == null)
+                convertView = mLayoutInflater.inflate(
+                        android.R.layout.simple_expandable_list_item_1,
+                        parent,
+                        false
+                );
+
+            ((TextView) convertView).setText(getChild(groupPosition, childPosition));
+            return convertView;
+        }
+
+        if (convertView == null || convertView.findViewById(R.id.version_child_title) == null) {
+            convertView = mLayoutInflater.inflate(
+                    R.layout.item_version_child_animated,
+                    parent,
+                    false
+            );
+        }
+
+        TextView title = convertView.findViewById(R.id.version_child_title);
+        title.setText(getChild(groupPosition, childPosition));
+
+        convertView.setAlpha(0.7f);
+        convertView.setTranslationX(12f);
+        convertView.animate()
+                .alpha(1f)
+                .translationX(0f)
+                .setDuration(180)
+                .start();
+
         return convertView;
     }
 
