@@ -46,7 +46,6 @@ import java.util.Objects;
 
 import fr.spse.extended_view.ExtendedTextView;
 import net.kdt.pojavlaunch.R;
-import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 public class AccountSpinner extends AppCompatSpinner implements LoginListener, AdapterView.OnItemSelectedListener, ValueAnimator.AnimatorUpdateListener {
     private Adapter mAdapter;
@@ -280,10 +279,7 @@ public class AccountSpinner extends AppCompatSpinner implements LoginListener, A
 
 
         public Adapter(@NonNull Context context) {
-            super(context,
-                    AbgUiManager.isAnimatedUi(context)
-                            ? R.layout.item_account_animated
-                            : R.layout.item_account);
+            super(context, R.layout.item_account);
             mInflater = LayoutInflater.from(context);
         }
 

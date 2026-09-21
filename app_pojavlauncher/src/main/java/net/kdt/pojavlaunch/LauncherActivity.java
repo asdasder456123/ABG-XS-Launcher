@@ -20,10 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
@@ -52,7 +48,6 @@ import net.kdt.pojavlaunch.tasks.MoJsonExtras;
 import net.kdt.pojavlaunch.tasks.AsyncVersionList;
 import net.kdt.pojavlaunch.tasks.MoJsonDownloader;
 import net.kdt.pojavlaunch.utils.NotificationUtils;
-import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 import net.kdt.pojavlaunch.R;
 
@@ -169,55 +164,7 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean auroraUi = AbgUiManager.isAuroraUi(this);
-        boolean animatedUi = AbgUiManager.isAnimatedUi(this);
-
-        if (auroraUi || animatedUi) {
-            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-            WindowInsetsControllerCompat controller =
-                    WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
-
-            if (controller != null) {
-                controller.setAppearanceLightStatusBars(false);
-                controller.setAppearanceLightNavigationBars(false);
-            }
-        }
-
-        setContentView(animatedUi
-                ? R.layout.activity_pojav_launcher_animated
-                : R.layout.activity_pojav_launcher);
-
-        if (animatedUi) {
-            View topBar = findViewById(R.id.animated_top_bar);
-
-            if (topBar != null) {
-                ViewCompat.setOnApplyWindowInsetsListener(topBar, (view, insets) -> {
-                    int top = insets.getInsets(
-                            WindowInsetsCompat.Type.statusBars()
-                    ).top;
-
-                    view.setPadding(
-                            view.getPaddingLeft(),
-                            top,
-                            view.getPaddingRight(),
-                            view.getPaddingBottom()
-                    );
-
-                    return insets;
-                });
-
-                ViewCompat.requestApplyInsets(topBar);
-
-                topBar.setAlpha(0f);
-                topBar.setTranslationY(-18f);
-                topBar.animate()
-                        .alpha(1f)
-                        .translationY(0f)
-                        .setDuration(360)
-                        .start();
-            }
-        }
-
+        setContentView(R.layout.activity_pojav_launcher);
         MoJsonDownloader.prepareSubstitutionMap(getAssets());
 
         try {

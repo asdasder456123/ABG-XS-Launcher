@@ -2,8 +2,6 @@ package net.kdt.pojavlaunch.fragments;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -16,27 +14,12 @@ import com.kdt.mcgui.ProgressLayout;
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
-import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 public class SelectAuthFragment extends Fragment {
     public static final String TAG = "AUTH_SELECT_FRAGMENT";
 
     public SelectAuthFragment(){
-        super();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int layout;
-        if (AbgUiManager.isAuroraUi(requireContext())) {
-            layout = R.layout.fragment_select_auth_method_aurora;
-        } else if (AbgUiManager.isAnimatedUi(requireContext())) {
-            layout = R.layout.fragment_select_auth_method_animated;
-        } else {
-            layout = R.layout.fragment_select_auth_method;
-        }
-
-        return inflater.inflate(layout, container, false);
+        super(R.layout.fragment_select_auth_method);
     }
 
     @Override
@@ -44,19 +27,6 @@ public class SelectAuthFragment extends Fragment {
         Button mMicrosoftButton = view.findViewById(R.id.button_microsoft_authentication);
         Button mLocalButton = view.findViewById(R.id.button_local_authentication);
         Button mElyByButton = view.findViewById(R.id.button_elyby_authentication);
-
-        if (AbgUiManager.isAnimatedUi(requireContext())) {
-            View card = view.findViewById(R.id.auth_card);
-            if (card != null) {
-                card.setAlpha(0f);
-                card.setTranslationY(28f);
-                card.animate()
-                        .alpha(1f)
-                        .translationY(0f)
-                        .setDuration(360)
-                        .start();
-            }
-        }
 
         mMicrosoftButton.setOnClickListener(v -> launchAuthFragment(MicrosoftLoginFragment.class, MicrosoftLoginFragment.TAG));
         mLocalButton.setOnClickListener(v -> launchAuthFragment(LocalLoginFragment.class, LocalLoginFragment.TAG));

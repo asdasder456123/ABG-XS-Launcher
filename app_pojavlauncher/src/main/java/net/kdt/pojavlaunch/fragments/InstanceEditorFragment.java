@@ -35,7 +35,6 @@ import net.kdt.pojavlaunch.instances.InstanceIconProvider;
 import net.kdt.pojavlaunch.profiles.VersionSelectorDialog;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
 import net.kdt.pojavlaunch.utils.CropperUtils;
-import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
     private List<String> mRenderNames;
 
     public InstanceEditorFragment(){
-        super();
+        super(R.layout.fragment_instance_editor);
     }
 
     @Nullable
@@ -70,31 +69,12 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         if(value != null){
             mSelectedControlLayout = value;
         }
-        int layout;
-        if (AbgUiManager.isAuroraUi(requireContext())) {
-            layout = R.layout.fragment_instance_editor_aurora;
-        } else if (AbgUiManager.isAnimatedUi(requireContext())) {
-            layout = R.layout.fragment_instance_editor_animated;
-        } else {
-            layout = R.layout.fragment_instance_editor;
-        }
-
-        return inflater.inflate(layout, container, false);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         bindViews(view);
-
-        if (AbgUiManager.isAnimatedUi(requireContext())) {
-            view.setAlpha(0f);
-            view.setTranslationY(24f);
-            view.animate()
-                    .alpha(1f)
-                    .translationY(0f)
-                    .setDuration(300)
-                    .start();
-        }
 
         RendererCache list = RendererCache.getCompatibleRenderers(view.getContext());
         mRenderNames = list.rendererIds;
@@ -107,7 +87,7 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         mSaveButton.setOnClickListener(v -> {
             InstanceIconProvider.dropIcon(mInstance);
             save();
-            Tools.returnToMainMenu(requireActivity());
+            Tools.backToMainMenu(requireActivity());
         });
 
         mDeleteButton.setOnClickListener(v -> {
@@ -142,7 +122,7 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         Context context = view.getContext();
         if(selectedInstance == null) {
             Toast.makeText(context, R.string.no_instance, Toast.LENGTH_LONG).show();
-            Tools.returnToMainMenu(requireActivity());
+            getParentFragmentManager().popBackStack();
         }else {
             loadValues(selectedInstance, context);
         }

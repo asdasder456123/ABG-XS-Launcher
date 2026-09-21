@@ -6,9 +6,7 @@ import static net.kdt.pojavlaunch.Tools.shareLog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -23,7 +21,6 @@ import com.kdt.mcgui.mcVersionSpinner;
 
 import net.kdt.pojavlaunch.CustomControlsActivity;
 import net.kdt.pojavlaunch.R;
-import net.kdt.pojavlaunch.ui.AbgUiManager;
 
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension;
@@ -47,38 +44,19 @@ public class MainMenuFragment extends Fragment {
                 if(data != null) Tools.launchModInstaller(requireContext(), data);
             });
 
-    public MainMenuFragment() {
-        super();
-    }
-
-    @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-
-        int layout;
-
-        if (AbgUiManager.isAuroraUi(requireContext())) {
-            layout = R.layout.fragment_launcher_aurora;
-        } else if (AbgUiManager.isAnimatedUi(requireContext())) {
-            layout = R.layout.fragment_launcher_animated;
-        } else {
-            layout = R.layout.fragment_launcher;
-        }
-
-        return inflater.inflate(layout, container, false);
+    public MainMenuFragment(){
+        super(R.layout.fragment_launcher);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        View mDiscordButton = view.findViewById(R.id.social_media_button);
+        Button mDiscordButton = view.findViewById(R.id.social_media_button);
         Button mCustomControlButton = view.findViewById(R.id.custom_control_button);
         Button mInstallJarButton = view.findViewById(R.id.install_jar_button);
         Button mShareLogsButton = view.findViewById(R.id.share_logs_button);
         Button mOpenDirectoryButton = view.findViewById(R.id.open_files_button);
 
-        Button mEditProfileButton = view.findViewById(R.id.edit_profile_button);
+        ImageButton mEditProfileButton = view.findViewById(R.id.edit_profile_button);
         Button mPlayButton = view.findViewById(R.id.play_button);
         mVersionSpinner = view.findViewById(R.id.mc_version_spinner);
 
@@ -119,142 +97,8 @@ public class MainMenuFragment extends Fragment {
 
         mOpenDirectoryButton.setOnClickListener((v)-> openGameDirectory(v.getContext()));
 
-        if (AbgUiManager.isAnimatedUi(requireContext())) {
-            animateAnimatedUi(view);
-        } else if (AbgUiManager.isAuroraUi(requireContext())) {
-            animateAuroraUi(view);
-        }
 
 
-
-    }
-
-    private void animateAuroraUi(View root) {
-        View content = root.findViewById(R.id.animated_content);
-        if (content == null) return;
-
-        content.setAlpha(0f);
-        content.setTranslationY(18f);
-
-        content.animate()
-                .alpha(1f)
-                .translationY(0f)
-                .setDuration(360)
-                .start();
-
-        View play = root.findViewById(R.id.play_button);
-        if (play != null) {
-            play.setScaleX(0.96f);
-            play.setScaleY(0.96f);
-            play.setAlpha(0f);
-
-            play.animate()
-                    .alpha(1f)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(300)
-                    .setStartDelay(180)
-                    .start();
-        }
-    }
-
-    private void animateAnimatedUi(View root) {
-        View content = root.findViewById(R.id.animated_content);
-        if (content == null) return;
-
-        content.setAlpha(0f);
-        content.setTranslationY(32f);
-
-        content.animate()
-                .alpha(1f)
-                .translationY(0f)
-                .setDuration(420)
-                .setStartDelay(80)
-                .start();
-
-        int[] buttonIds = {
-                R.id.social_media_button,
-                R.id.custom_control_button,
-                R.id.install_jar_button,
-                R.id.share_logs_button,
-                R.id.open_files_button
-        };
-
-        for (int i = 0; i < buttonIds.length; i++) {
-            View button = root.findViewById(buttonIds[i]);
-            if (button == null) continue;
-
-            button.setAlpha(0f);
-            button.setTranslationX(24f);
-
-            button.animate()
-                    .alpha(1f)
-                    .translationX(0f)
-                    .setDuration(300)
-                    .setStartDelay(140L + (i * 55L))
-                    .start();
-
-            button.setOnTouchListener((v, event) -> {
-                switch (event.getActionMasked()) {
-                    case android.view.MotionEvent.ACTION_DOWN:
-                        v.animate()
-                                .scaleX(0.97f)
-                                .scaleY(0.97f)
-                                .setDuration(90)
-                                .start();
-                        break;
-
-                    case android.view.MotionEvent.ACTION_UP:
-                    case android.view.MotionEvent.ACTION_CANCEL:
-                        v.animate()
-                                .scaleX(1f)
-                                .scaleY(1f)
-                                .setDuration(120)
-                                .start();
-                        break;
-                }
-
-                return false;
-            });
-        }
-
-        View play = root.findViewById(R.id.play_button);
-        if (play != null) {
-            if (AbgUiManager.isAnimatedUi(requireContext())) {
-                play.setBackgroundResource(R.drawable.bg_abg_animated_play);
-            }
-
-            play.setScaleX(0.94f);
-            play.setScaleY(0.94f);
-            play.setAlpha(0f);
-
-            play.animate()
-                    .alpha(1f)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(380)
-                    .setStartDelay(360)
-                    .start();
-
-            play.setOnTouchListener((v, event) -> {
-                if (event.getActionMasked() == android.view.MotionEvent.ACTION_DOWN) {
-                    v.animate()
-                            .scaleX(0.96f)
-                            .scaleY(0.96f)
-                            .setDuration(80)
-                            .start();
-                } else if (event.getActionMasked() == android.view.MotionEvent.ACTION_UP
-                        || event.getActionMasked() == android.view.MotionEvent.ACTION_CANCEL) {
-                    v.animate()
-                            .scaleX(1f)
-                            .scaleY(1f)
-                            .setDuration(120)
-                            .start();
-                }
-
-                return false;
-            });
-        }
     }
 
     private void openGameDirectory(Context context) {
@@ -274,16 +118,7 @@ public class MainMenuFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         ExtraCore.setValue(ExtraConstants.REFRESH_ACCOUNT_SPINNER, true);
-
-        if (mVersionSpinner != null) {
-            mVersionSpinner.post(() -> {
-                if (isAdded()) {
-                    mVersionSpinner.reloadProfiles();
-                }
-            });
-        }
     }
 
     private void runInstallerWithConfirmation() {
