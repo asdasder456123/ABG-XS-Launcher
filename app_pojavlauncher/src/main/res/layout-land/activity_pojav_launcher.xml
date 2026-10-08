@@ -40,6 +40,16 @@
         app:layout_constraintTop_toBottomOf="@+id/account_spinner" />
 
 
+    <Button
+        android:id="@+id/pvp_button"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_marginEnd="@dimen/_52sdp"
+        android:text="PVP"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.kdt.mcgui.ProgressLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
