@@ -271,6 +271,11 @@ public class JavaRunner {
      * @throws VMLoadException if an error occurred during VM loading
      */
     public static void startJvm(Runtime runtime, List<String> vmArgs, List<String> classpathEntries, String mainClass, List<String> applicationArgs) throws VMLoadException{
+        // Make defensive mutable copies: callers may pass immutable Lists.
+        vmArgs = new ArrayList<>(vmArgs);
+        classpathEntries = new ArrayList<>(classpathEntries);
+        applicationArgs = new ArrayList<>(applicationArgs);
+
         File runtimeHomeDir = MultiRTUtils.getRuntimeHome(runtime.name);
         File vmPath = findVmPath(runtimeHomeDir, runtime.arch);
         if(vmPath == null) {
