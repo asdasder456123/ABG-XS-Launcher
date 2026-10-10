@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import net.kdt.pojavlaunch.pvp.PvpManager;
+import net.kdt.pojavlaunch.pvp.PvpModrinthManager;
 import net.kdt.pojavlaunch.Architecture;
 import net.kdt.pojavlaunch.JVersionList;
 import net.kdt.pojavlaunch.Tools;
@@ -266,6 +268,18 @@ public class GameRunner {
         disableSplash(gamedir);
         List<String> launchArgs = getMoJsonClientArgs(account, versionInfo, gamedir);
 
+        /*
+         * PVP is a single master-gated subsystem.
+         *
+         * When disabled, this does absolutely nothing.
+         * When enabled, PVP mods stored in pvp/mods/ are temporarily
+         * copied into Minecraft's normal mods/ directory for Fabric.
+         */
+        List<File> pvpLaunchFiles =
+                PvpManager.isEnabled(activity)
+                        ? PvpModrinthManager.prepareLaunch(activity, instance)
+                        : new ArrayList<>();
+
         // Select the appropriate openGL version
         OldVersionsUtils.selectOpenGlVersion(versionInfo);
 
@@ -339,7 +353,13 @@ public class GameRunner {
         try {
             JavaRunner.nativeSetupExit(activity);
             JavaRunner.startJvm(runtime, javaArgList, launchClassPath, mainClass, launchArgs);
+
+            if (PvpManager.isEnabled(activity)) {
+                PvpModrinthManager.cleanupLaunch(pvpLaunchFiles);
+            }
         }catch (VMLoadException e) {
+            PvpModrinthManager.cleanupLaunch(pvpLaunchFiles);
+
             LifecycleAwareAlertDialog.DialogCreator dialogCreator = (dialog, builder) ->
                 builder.setMessage(e.toString(activity)).setPositiveButton(android.R.string.ok, (d, w)->{});
 

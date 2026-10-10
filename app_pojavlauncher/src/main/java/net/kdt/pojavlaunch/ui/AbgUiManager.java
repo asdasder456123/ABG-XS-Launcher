@@ -9,6 +9,7 @@ public final class AbgUiManager {
     private static final String KEY_SELECTED_UI = "selected_ui";
 
     public static final String UI_DEFAULT = "default";
+    private static final String KEY_PVP_ENABLED = "pvp_enabled";
 
     private AbgUiManager() {
     }
@@ -33,6 +34,14 @@ public final class AbgUiManager {
 
     public static boolean isDefaultUi(Context context) {
         return UI_DEFAULT.equals(getSelectedUi(context));
+    }
+
+    public static boolean isPvpEnabled(Context context) {
+        return getPreferences(context).getBoolean(KEY_PVP_ENABLED, false);
+    }
+
+    public static void setPvpEnabled(Context context, boolean enabled) {
+        getPreferences(context).edit().putBoolean(KEY_PVP_ENABLED, enabled).apply();
     }
 
     private static SharedPreferences getPreferences(Context context) {

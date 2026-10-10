@@ -1,10 +1,23 @@
 package net.kdt.pojavlaunch;
 
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.view.Gravity;
+import android.widget.ImageView;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.IOException;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -12,6 +25,7 @@ import android.os.Bundle;
 import android.system.Os;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -27,6 +41,7 @@ import androidx.fragment.app.FragmentManager;
 import com.kdt.mcgui.ProgressLayout;
 
 import net.kdt.pojavlaunch.authenticator.accounts.Accounts;
+import net.kdt.pojavlaunch.authenticator.accounts.Account;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
 import net.kdt.pojavlaunch.extra.ExtraListener;
@@ -42,6 +57,9 @@ import net.kdt.pojavlaunch.modloaders.modpacks.imagecache.IconCacheJanitor;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
+import net.kdt.pojavlaunch.ui.AbgUiManager;
+import net.kdt.pojavlaunch.pvp.PvpManager;
+import net.kdt.pojavlaunch.fragments.PvpFragment;
 import net.kdt.pojavlaunch.progresskeeper.TaskCountListener;
 import net.kdt.pojavlaunch.services.ProgressServiceKeeper;
 import net.kdt.pojavlaunch.tasks.MoJsonExtras;
@@ -60,6 +78,7 @@ public class LauncherActivity extends BaseActivity {
     private ProgressServiceKeeper mProgressServiceKeeper;
     private NotificationManager mNotificationManager;
     private static ActivityResultLauncher<String> mRequestPermissionLauncher;
+    private ActivityResultLauncher<String> abgSkinPicker;
 
     /* Allows to switch from one button "type" to another */
     private final FragmentManager.FragmentLifecycleCallbacks mFragmentCallbackListener = new FragmentManager.FragmentLifecycleCallbacks() {
@@ -178,6 +197,13 @@ public class LauncherActivity extends BaseActivity {
 
         getWindow().setBackgroundDrawable(null);
         bindViews();
+        Button skinButton = findViewById(R.id.skin_button);
+        skinButton.setOnClickListener(v -> showSkinLibrary());
+        abgSkinPicker = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                this::saveSelectedSkin
+        );
+
         mRequestPermissionLauncher = this.registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 isAllowed -> {
@@ -326,6 +352,211 @@ public class LauncherActivity extends BaseActivity {
         LauncherPreferences.DEFAULT_PREF.edit()
                 .putBoolean(LauncherPreferences.PREF_KEY_SKIP_NOTIFICATION_CHECK, true)
                 .apply();
+    }
+
+    private void showSkinLibrary() {
+        if (Accounts.getCurrent() == null) {
+            Toast.makeText(this, R.string.no_saved_accounts, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String[] choices = {
+                "البحث باسم لاعب Minecraft",
+                "Notch",
+                "jeb_",
+                "Dream",
+                "Technoblade",
+                "Steve",
+                "Alex",
+                "اختيار صورة من الجهاز"
+        };
+
+        new AlertDialog.Builder(this)
+                .setTitle("مكتبة السكنات")
+                .setItems(choices, (dialog, which) -> {
+                    if (which == 0) {
+                        showSkinSearch();
+                    } else if (which == choices.length - 1) {
+                        abgSkinPicker.launch("image/*");
+                    } else {
+                        downloadPlayerSkin(choices[which]);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void showSkinSearch() {
+        EditText input = new EditText(this);
+        input.setSingleLine(true);
+        input.setHint("اسم لاعب Minecraft");
+        input.setPadding(36, 24, 36, 24);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        int padding = (int) (16 * getResources().getDisplayMetrics().density);
+        layout.setPadding(padding, 0, padding, 0);
+        layout.addView(input);
+
+        new AlertDialog.Builder(this)
+                .setTitle("البحث عن سكن")
+                .setMessage("اكتب اسم اللاعب، وسيتم جلب صورة السكن من الإنترنت.")
+                .setView(layout)
+                .setPositiveButton("بحث", (dialog, which) -> {
+                    String username = input.getText().toString().trim();
+                    downloadPlayerSkin(username);
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void downloadPlayerSkin(String username) {
+        if (username == null || !username.matches("[A-Za-z0-9_]{1,16}")) {
+            Toast.makeText(this, "اكتب اسم لاعب صحيحًا (من 1 إلى 16 حرفًا).",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Account account = Accounts.getCurrent();
+        if (account == null) {
+            Toast.makeText(this, R.string.no_saved_accounts, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Toast.makeText(this, "جاري تحميل سكن " + username + "...",
+                Toast.LENGTH_SHORT).show();
+
+        PojavApplication.sExecutorService.execute(() -> {
+            Bitmap bitmap = null;
+            try {
+                URL url = new URL("https://api.mcskin.me/skin/" + username);
+                HttpURLConnection connection =
+                        (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(10000);
+                connection.setReadTimeout(15000);
+                connection.setInstanceFollowRedirects(true);
+                connection.setRequestProperty("Accept", "image/png");
+                try {
+                    int status = connection.getResponseCode();
+                    if (status != HttpURLConnection.HTTP_OK) {
+                        throw new IOException("الخدمة لم تُرجع سكنًا (HTTP " + status + ")");
+                    }
+
+                    try (InputStream input = connection.getInputStream()) {
+                        bitmap = BitmapFactory.decodeStream(input);
+                    }
+                } finally {
+                    connection.disconnect();
+                }
+
+                if (bitmap == null) {
+                    throw new IOException("الصورة المستلمة غير صالحة.");
+                }
+
+                if (!((bitmap.getWidth() == 64 && bitmap.getHeight() == 64)
+                        || (bitmap.getWidth() == 64 && bitmap.getHeight() == 32))) {
+                    throw new IOException("أبعاد صورة السكن غير مدعومة.");
+                }
+
+                File directory = new File(getFilesDir(), "abg_skins");
+                if (!directory.exists() && !directory.mkdirs()) {
+                    throw new IOException("تعذّر إنشاء مجلد السكنات.");
+                }
+
+                String safeName = account.username.replaceAll("[^A-Za-z0-9_.-]", "_");
+                File output = new File(directory, safeName + ".png");
+                try (FileOutputStream stream = new FileOutputStream(output)) {
+                    if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+                        throw new IOException("تعذّر حفظ صورة السكن.");
+                    }
+                    stream.flush();
+                }
+
+                File savedFile = output;
+                runOnUiThread(() -> showSavedSkinPreview(savedFile));
+            } catch (Exception e) {
+                String message = e.getMessage() == null
+                        ? "تعذّر تحميل السكن." : e.getMessage();
+                runOnUiThread(() -> Toast.makeText(
+                        this, "فشل تحميل السكن: " + message,
+                        Toast.LENGTH_LONG).show());
+            } finally {
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    bitmap.recycle();
+                }
+            }
+        });
+    }
+
+    private void saveSelectedSkin(Uri uri) {
+        if (uri == null) return;
+
+        Account account = Accounts.getCurrent();
+        if (account == null) {
+            Toast.makeText(this, R.string.no_saved_accounts,
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        PojavApplication.sExecutorService.execute(() -> {
+            Bitmap bitmap = null;
+            File output = null;
+            try (InputStream input = getContentResolver().openInputStream(uri)) {
+                if (input == null) throw new IOException("Cannot open selected image");
+
+                bitmap = BitmapFactory.decodeStream(input);
+                if (bitmap == null) throw new IOException("Unsupported image");
+
+                // Minecraft Java skins use 64x64 or the legacy 64x32 format.
+                if (!((bitmap.getWidth() == 64 && bitmap.getHeight() == 64)
+                        || (bitmap.getWidth() == 64 && bitmap.getHeight() == 32))) {
+                    throw new IOException("Skin image must be 64x64 or 64x32 pixels");
+                }
+
+                File directory = new File(getFilesDir(), "abg_skins");
+                if (!directory.exists() && !directory.mkdirs()) {
+                    throw new IOException("Cannot create skin directory");
+                }
+
+                String safeName = account.username.replaceAll("[^A-Za-z0-9_.-]", "_");
+                output = new File(directory, safeName + ".png");
+
+                try (FileOutputStream stream = new FileOutputStream(output)) {
+                    if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+                        throw new IOException("Could not save skin image");
+                    }
+                    stream.flush();
+                }
+
+                File savedFile = output;
+                runOnUiThread(() -> showSavedSkinPreview(savedFile));
+            } catch (Exception e) {
+                runOnUiThread(() -> Toast.makeText(
+                        this,
+                        "تعذّر حفظ السكن: " + e.getMessage(),
+                        Toast.LENGTH_LONG
+                ).show());
+            } finally {
+                if (bitmap != null) bitmap.recycle();
+            }
+        });
+    }
+
+    private void showSavedSkinPreview(File file) {
+        ImageView preview = new ImageView(this);
+        preview.setImageURI(Uri.fromFile(file));
+        preview.setAdjustViewBounds(true);
+        preview.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        int padding = (int) (24 * getResources().getDisplayMetrics().density);
+        preview.setPadding(padding, padding, padding, padding);
+
+        new AlertDialog.Builder(this)
+                .setTitle("تم حفظ صورة السكن")
+                .setMessage("تم حفظ الصورة محليًا. لم يتم رفعها إلى خادم Minecraft.")
+                .setView(preview)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     /** Stuff all the view boilerplate here */

@@ -19,6 +19,20 @@
         tools:ignore="RtlSymmetry" />
     <!-- Ignore because it's  done to fit the ImageButton within spinner background -->
 
+
+
+    <com.kdt.mcgui.MineButton
+        android:id="@+id/skin_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:backgroundTint="#24211B"
+        android:text="@string/abg_xs_change_skin"
+        android:textColor="#D6B96C"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintTop_toBottomOf="@+id/account_spinner" />
+
     <ImageButton
         android:id="@+id/setting_button"
         android:layout_width="@dimen/_52sdp"
@@ -38,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/progress_layout"
-        app:layout_constraintTop_toBottomOf="@+id/account_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/skin_button" />
 
 
     <com.kdt.mcgui.ProgressLayout
